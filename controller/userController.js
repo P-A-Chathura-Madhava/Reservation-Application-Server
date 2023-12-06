@@ -73,4 +73,22 @@ const createUser = asyncHandler(async (req, res) => {
     }
   });
 
-  export {createUser, loginUserCtrl, getAllUsers, getaUser, deleteaUser};
+  // update a user
+const updateaUser = asyncHandler(async (req, res) => {
+    const {id} = req.params;
+    try {
+        const updatedUser = await User.findByIdAndUpdate(id, {
+            name: req?.body?.name,
+            email: req?.body?.email,
+            mobile: req?.body?.mobile,
+        },
+        {
+            new: true,
+        });
+        res.json(updatedUser);
+    } catch (error) {
+        throw new Error(error);
+    }
+});
+
+  export {createUser, loginUserCtrl, getAllUsers, getaUser, deleteaUser, updateaUser};
