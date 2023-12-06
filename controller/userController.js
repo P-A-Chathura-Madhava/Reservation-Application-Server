@@ -1,6 +1,7 @@
 import { generateToken } from '../config/jwtToken.js';
 import User from '../models/userModel.js';
 import asyncHandler from 'express-async-handler';
+import validateMongoDbId from '../utils/validateMongodbId.js';
 
 const createUser = asyncHandler(async (req, res) => {
     // console.log(req.body);
@@ -50,6 +51,7 @@ const createUser = asyncHandler(async (req, res) => {
   // get a user
   const getaUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    validateMongoDbId(id);
     try {
       const getaUser = await User.findById(id);
       res.json({
@@ -63,6 +65,7 @@ const createUser = asyncHandler(async (req, res) => {
   // delete a user
   const deleteaUser = asyncHandler(async (req, res) => {
     const { id } = req.params;
+    validateMongoDbId(id)
     try {
       const deleteaUser = await User.findByIdAndDelete(id);
       res.json({
@@ -74,21 +77,43 @@ const createUser = asyncHandler(async (req, res) => {
   });
 
   // update a user
+// const updateaUser = asyncHandler(async (req, res) => {
+//     const {id} = req.params;
+//     try {
+//         const updatedUser = await User.findByIdAndUpdate(id, {
+//             name: req?.body?.name,
+//             email: req?.body?.email,
+//             mobile: req?.body?.mobile,
+//         },
+//         {
+//             new: true,
+//         });
+//         res.json(updatedUser);
+//     } catch (error) {
+//         throw new Error(error);
+//     }
+// });
+
 const updateaUser = asyncHandler(async (req, res) => {
-    const {id} = req.params;
-    try {
-        const updatedUser = await User.findByIdAndUpdate(id, {
-            name: req?.body?.name,
-            email: req?.body?.email,
-            mobile: req?.body?.mobile,
-        },
-        {
-            new: true,
-        });
-        res.json(updatedUser);
-    } catch (error) {
-        throw new Error(error);
-    }
+  console.log(req.user);
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        name: req?.body?.name,
+        email: req?.body?.email,
+        mobile: req?.body?.mobile,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
   export {createUser, loginUserCtrl, getAllUsers, getaUser, deleteaUser, updateaUser};
