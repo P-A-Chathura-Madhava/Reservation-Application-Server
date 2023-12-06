@@ -25,6 +25,9 @@ var userSchema = new mongoose.Schema({
     type: String,
     default: "user"
   },
+  refreshToken: {
+    type: String,
+  },
 });
 
 // create password
