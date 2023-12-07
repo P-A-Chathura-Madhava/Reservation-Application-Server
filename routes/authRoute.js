@@ -1,5 +1,5 @@
 import express from 'express';
-import { createUser, deleteaUser, getAllUsers, getaUser, handleRefreshToken, loginUserCtrl, updateaUser } from '../controller/userController.js';
+import { createUser, deleteaUser, getAllUsers, getaUser, handleRefreshToken, loginUserCtrl, logout, updateaUser } from '../controller/userController.js';
 import { authMiddleware, isAdmin } from '../config/authMiddleware.js';
 
 const router = express.Router();
@@ -8,6 +8,7 @@ router.post("/register", createUser);
 router.post("/login", loginUserCtrl);
 router.get("/all-users", getAllUsers);
 router.get("/refresh", handleRefreshToken);
+router.get("/logout", logout);
 router.get("/:id", authMiddleware, isAdmin, getaUser);
 router.delete("/:id", deleteaUser);
 // router.put("/:id", updateaUser);

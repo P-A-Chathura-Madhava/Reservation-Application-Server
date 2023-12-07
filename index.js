@@ -5,10 +5,12 @@ import authRoute from './routes/authRoute.js';
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 // import bodyParser from 'body-parser';
+import cors from 'cors';
 
 const app = express();
 const dotenv = envs.config();
 dbConnect();
+app.use(cors());
 const PORT = process.env.PORT || 4000;
 
 // app.use('/', (req, res) => {

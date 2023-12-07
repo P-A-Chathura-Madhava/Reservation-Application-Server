@@ -70,6 +70,32 @@ const handleRefreshToken = asyncHandler(async (req, res) => {
   });
 });
 
+// logout a user
+const logout = asyncHandler(async (req, res) => {
+  const cookie = req.cookies;
+  if (!cookie?.refreshToken) throw new Error("No refresh token in cookies");
+  const refreshToken = cookie.refreshToken;
+  const user = await User.findOne({ refreshToken });
+  if (!user) {
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+    });
+    return res.sendStatus(204);
+  }
+  await User.findOneAndUpdate(
+    { refreshToken: { $eq: refreshToken } },
+    {
+      refreshToken: "",
+    }
+  );
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: true,
+  });
+  res.sendStatus(204);
+});
+
 // get all users
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
@@ -155,5 +181,6 @@ export {
   getaUser,
   deleteaUser,
   updateaUser,
-  handleRefreshToken
+  handleRefreshToken,
+  logout
 };
