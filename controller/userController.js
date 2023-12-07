@@ -4,6 +4,7 @@ import asyncHandler from "express-async-handler";
 import validateMongoDbId from "../utils/validateMongodbId.js";
 import generateRefreshToken from "../config/refreshToken.js";
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 const createUser = asyncHandler(async (req, res) => {
   // console.log(req.body);
@@ -126,11 +127,27 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
       subject: "Forgot Password Link",
       htm: resetURL,
     };
-    // sendEmail(data);
     res.json(token);
   } catch (error) {
     throw new Error(error);
   }
+});
+
+// reset password
+const resetPassword = asyncHandler(async (req, res) => {
+  const { password } = req.body;
+  const { token } = req.params;
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetExpires: { $gt: Date.now() },
+  });
+  if (!user) throw new Error(" Token Expired, Please try again later");
+  user.password = password;
+  user.passwordResetToken = undefined;
+  user.passwordResetExpires = undefined;
+  await user.save();
+  res.json(user);
 });
 
 // get all users
@@ -253,5 +270,6 @@ export {
   logout,
   loginAdmin,
   updatePassword,
-  forgotPasswordToken
+  forgotPasswordToken,
+  resetPassword
 };
