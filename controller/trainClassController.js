@@ -10,4 +10,23 @@ const createTrainClass = asyncHandler(async (req, res) => {
       }
 })
 
-export {createTrainClass}
+const updateATrainClass = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+      const updatedTrainClass = await TrainClass.findByIdAndUpdate(
+        id,
+        {
+          type: req?.body?.type,
+          seat: req?.body?.seat,
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(updatedTrainClass);
+    } catch (error) {
+      throw new Error(error);
+    }
+})
+
+export {createTrainClass, updateATrainClass}
