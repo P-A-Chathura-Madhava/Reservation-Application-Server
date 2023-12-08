@@ -2,6 +2,7 @@ import express from 'express';
 import envs from 'dotenv';
 import dbConnect from './config/dbConnect.js';
 import authRoute from './routes/authRoute.js';
+import trainRoute from './routes/trainRoute.js';
 import { errorHandler, notFound } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 // import bodyParser from 'body-parser';
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(cookieParser());
 // app.use(bodyParser.json());
 app.use("/api/v1/user", authRoute);
+app.use("/api/v1/train", trainRoute);
 
 // middlewares
 app.use(notFound);

@@ -20,7 +20,7 @@ var trainSchema = new mongoose.Schema(
       type: String,
       enum: ["A", "B", "C", "E"],
     },
-    seats: {
+    seat: {
       type: Number,
       default: 0,
     },
