@@ -48,4 +48,16 @@ const getATrainClass = asyncHandler(async (req, res) => {
       }
   });
 
-export {createTrainClass, updateATrainClass, getATrainClass, getAllTrainClasses}
+  const deleteATrainClass = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+      const deletedTrainClass = await TrainClass.findByIdAndDelete(id);
+      res.json({
+        deletedTrainClass,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  });
+
+export {createTrainClass, updateATrainClass, getATrainClass, getAllTrainClasses, deleteATrainClass}

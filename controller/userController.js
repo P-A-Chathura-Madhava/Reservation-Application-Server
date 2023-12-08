@@ -5,6 +5,7 @@ import validateMongoDbId from "../utils/validateMongodbId.js";
 import generateRefreshToken from "../config/refreshToken.js";
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import Reservation from "../models/reservationModel.js";
 
 const createUser = asyncHandler(async (req, res) => {
   // console.log(req.body);
@@ -259,6 +260,47 @@ const loginAdmin = asyncHandler(async (req, res) => {
   }
 });
 
+// Reservations
+// reserve a train
+const reserveATrain = asyncHandler(async (req, res) => {
+  const {
+    ticketInfo,
+    reservedTrain
+  } = req.body;
+
+  const { _id } = req.user;
+
+  // console.log("ticketInfo", ticketInfo);
+  // console.log("reservedTrain", reservedTrain);
+  // console.log("totalPrice", totalPrice);
+  // console.log("id", _id);
+
+  try {
+    const reservationData = await Reservation.create({
+      ticketInfo,
+      reservedTrain,
+      user: _id,
+    });
+    res.json({
+      reservationData,
+      success: true,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// get a reservation
+const getATrainReservation = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const findTrainReservation = await Reservation.findById(id);
+    res.json(findTrainReservation);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 export {
   createUser,
   loginUserCtrl,
@@ -271,5 +313,7 @@ export {
   loginAdmin,
   updatePassword,
   forgotPasswordToken,
-  resetPassword
+  resetPassword,
+  reserveATrain,
+  getATrainReservation
 };
