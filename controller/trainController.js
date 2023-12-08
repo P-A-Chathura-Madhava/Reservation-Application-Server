@@ -42,4 +42,13 @@ const getATrain = asyncHandler(async (req, res) => {
     }
   });
 
-export {createTrain, updateATrain, getATrain}
+  const getAllTrains = asyncHandler(async (req, res) => {
+    try {
+        const getTrains = await Train.find();
+        res.json(getTrains);
+      } catch (error) {
+        throw new Error(error);
+      }
+  });
+
+export {createTrain, updateATrain, getATrain, getAllTrains}
