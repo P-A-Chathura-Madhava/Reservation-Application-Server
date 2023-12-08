@@ -301,6 +301,16 @@ const getATrainReservation = asyncHandler(async (req, res) => {
   }
 });
 
+// get all reservations
+const getAllTrainReservations = asyncHandler(async (req, res) => {
+  try {
+      const getTrainReservations = await Reservation.find();
+      res.json(getTrainReservations);
+    } catch (error) {
+      throw new Error(error);
+    }
+});
+
 export {
   createUser,
   loginUserCtrl,
@@ -315,5 +325,6 @@ export {
   forgotPasswordToken,
   resetPassword,
   reserveATrain,
-  getATrainReservation
+  getATrainReservation,
+  getAllTrainReservations
 };
