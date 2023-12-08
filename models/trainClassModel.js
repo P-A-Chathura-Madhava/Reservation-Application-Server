@@ -7,7 +7,7 @@ let trainClassSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    seats: {
+    seat: {
       type: Number,
     },
   },
@@ -15,4 +15,6 @@ let trainClassSchema = new mongoose.Schema(
 );
 
 //Export the model
-module.exports = mongoose.model("TrainClass", trainClassSchema);
+const TrainClass = mongoose.model("TrainClass", trainClassSchema);
+
+export default TrainClass;
