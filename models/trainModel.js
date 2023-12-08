@@ -16,10 +16,10 @@ var trainSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    class: {
+    class: [{
       type: String,
       enum: ["A", "B", "C", "E"],
-    },
+    }],
     seat: {
       type: Number,
       default: 0,

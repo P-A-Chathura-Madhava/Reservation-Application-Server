@@ -1,8 +1,9 @@
 import express from 'express';
-import { createTrain } from '../controller/trainController.js';
+import { createTrain, updateATrain } from '../controller/trainController.js';
 
 const router = express.Router();
 
 router.post("/", createTrain);
+router.put("/:id", updateATrain);
 
 export default router;
