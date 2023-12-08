@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from 'crypto';
 
 // Declare the Schema of the Mongo model
-var userSchema = new mongoose.Schema({
+let userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,

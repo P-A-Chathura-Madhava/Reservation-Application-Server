@@ -51,4 +51,16 @@ const getATrain = asyncHandler(async (req, res) => {
       }
   });
 
-export {createTrain, updateATrain, getATrain, getAllTrains}
+  const deleteATrain = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+      const deletedTrain = await Train.findByIdAndDelete(id);
+      res.json({
+        deletedTrain,
+      });
+    } catch (error) {
+      throw new Error(error);
+    }
+  });
+
+export {createTrain, updateATrain, getATrain, getAllTrains, deleteATrain}
