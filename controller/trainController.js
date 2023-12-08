@@ -32,4 +32,14 @@ const updateATrain = asyncHandler(async (req, res) => {
     }
 })
 
-export {createTrain, updateATrain}
+const getATrain = asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+      const findTrain = await Train.findById(id);
+      res.json(findTrain);
+    } catch (error) {
+      throw new Error(error);
+    }
+  });
+
+export {createTrain, updateATrain, getATrain}
