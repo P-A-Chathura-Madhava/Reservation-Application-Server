@@ -1,17 +1,29 @@
-import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 
-const createUser = asyncHandler(async (req, res) => {
-  const email = req.body.email;
-  const findUser = await User.findOne({ email: email });
-  if (!findUser) {
-    const newUser = await User.create(req.body);
-    res.json(newUser);
-  } else {
-    throw new Error("User Already Exists");
-  }
+const registerCustomer = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Register Customer" });
+});
+
+const loginCustomer = (req, res) => {
+  res.status(200).json({ message: "Login Customer" });
+};
+
+const logoutCustomer = (req, res) => {
+  res.status(200).json({ message: "logout Customer" });
+};
+
+const getCustomerProfile = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Get Customer Profile" });
+});
+
+const updateCustomerProfile = asyncHandler(async (req, res) => {
+  res.status(200).json({ message: "Update Customer Profile" });
 });
 
 export {
-  createUser
+  loginCustomer,
+  registerCustomer,
+  logoutCustomer,
+  getCustomerProfile,
+  updateCustomerProfile,
 };

@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import crypto from 'crypto';
 
 // Declare the Schema of the Mongo model
-let userSchema = new mongoose.Schema({
+let customerSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -38,7 +38,7 @@ let userSchema = new mongoose.Schema({
 });
 
 // create password
-userSchema.pre("save", async function (next) {
+customerSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     next();
   }
@@ -48,12 +48,12 @@ userSchema.pre("save", async function (next) {
 });
 
 //   match password
-userSchema.methods.isPasswordMatched = async function (enteredPassword) {
+customerSchema.methods.isPasswordMatched = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
 // reset password token
-userSchema.methods.createPasswordResetToken = async function () {
+customerSchema.methods.createPasswordResetToken = async function () {
   const resettoken = crypto.randomBytes(32).toString("hex");
   this.passwordResetToken = crypto
     .createHash("sha256")
@@ -64,6 +64,6 @@ userSchema.methods.createPasswordResetToken = async function () {
 };
 
 //Export the model
-const User = mongoose.model("User", userSchema);
+const Customer = mongoose.model("Customer", customerSchema);
 
-export default User;
+export default Customer;
