@@ -85,7 +85,30 @@ const getCustomerProfile = asyncHandler(async (req, res) => {
 });
 
 const updateCustomerProfile = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Update Customer Profile" });
+  // res.status(200).json({ message: "Update Customer Profile" });
+  const customer = await Customer.findById(req.customer._id);
+  // console.log(customer);
+  
+  if (customer) {
+    customer.name = req.body.name || customer.name;
+    customer.email = req.body.email || customer.email;
+    customer.mobile = req.body.mobile || customer.mobile;
+
+    if (req.body.password) {
+      customer.password = req.body.password;
+    }
+
+    const updatedCustomer = await customer.save();
+
+    res.json({
+      _id: updatedCustomer._id,
+      name: updatedCustomer.name,
+      email: updatedCustomer.email,
+    });
+  } else {
+    res.status(404).json('User not found');
+    // throw new Error('User not found');
+  }
 });
 
 export {
