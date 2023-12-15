@@ -1,7 +1,33 @@
 import asyncHandler from "express-async-handler";
+import Customer from '../models/customerModel.js';
 
 const registerCustomer = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Register Customer" });
+    const {name, email, mobile, password} = req.body;
+
+    const customerExists = await Customer.findOne({email});
+    if (customerExists) {
+        throw new Error("User Already Exists");
+        res.status(400);
+    } else {
+        const customer = await Customer.create({
+            name,
+            email,
+            mobile,
+            password
+        });
+
+        if (customer) {
+            res.status(201).json({ 
+                _id: customer._id,
+                name: customer._name,
+                email: customer.email,
+                mobile: customer.mobile
+             });            
+        }else {
+            res.status(400);
+            throw new Error("Invalid Customer Data")
+        }
+    }
 });
 
 const loginCustomer = (req, res) => {
