@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Customer from '../models/customerModel.js';
+import generateToken from "../utils/generateToken.js";
 
 const registerCustomer = asyncHandler(async (req, res) => {
     const {name, email, mobile, password} = req.body;
@@ -17,6 +18,7 @@ const registerCustomer = asyncHandler(async (req, res) => {
         });
 
         if (customer) {
+            generateToken(res, customer._id)
             res.status(201).json({ 
                 _id: customer._id,
                 name: customer._name,
