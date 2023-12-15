@@ -70,6 +70,18 @@ const getAllCustomerProfiles = asyncHandler(async (req, res) => {
 
 const getCustomerProfile = asyncHandler(async (req, res) => {
   // res.status(200).json({ message: "Get Customer Profile" });
+  const customer = await Customer.findById(req.customer._id);
+  
+  if (customer) {
+    res.json({
+      _id: customer._id,
+      name: customer.name,
+      email: customer.email,
+    });
+  } else {
+    res.status(404).json('User not found');
+    // throw new Error('User not found');
+  }
 });
 
 const updateCustomerProfile = asyncHandler(async (req, res) => {
