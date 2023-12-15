@@ -50,7 +50,12 @@ const loginCustomer = asyncHandler (async(req, res) => {
 });
 
 const logoutCustomer = (req, res) => {
-  res.status(200).json({ message: "logout Customer" });
+//   res.status(200).json({ message: "logout Customer" });
+res.cookie('jwt', '', {
+    httpOnly: true,
+    expires: new Date(0),
+  });
+  res.status(200).json({ message: 'Logged out successfully' });
 };
 
 const getCustomerProfile = asyncHandler(async (req, res) => {
