@@ -58,6 +58,10 @@ res.cookie('jwt', '', {
   res.status(200).json({ message: 'Logged out successfully' });
 };
 
+const getAllCustomerProfiles = asyncHandler(async (req, res) => {
+    res.status(200).json({ message: "Get All Customer Profiles" });
+  });
+
 const getCustomerProfile = asyncHandler(async (req, res) => {
   res.status(200).json({ message: "Get Customer Profile" });
 });
@@ -70,6 +74,7 @@ export {
   loginCustomer,
   registerCustomer,
   logoutCustomer,
+  getAllCustomerProfiles,
   getCustomerProfile,
   updateCustomerProfile,
 };
