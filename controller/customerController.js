@@ -59,11 +59,17 @@ res.cookie('jwt', '', {
 };
 
 const getAllCustomerProfiles = asyncHandler(async (req, res) => {
-    res.status(200).json({ message: "Get All Customer Profiles" });
+    // res.status(200).json({ message: "Get All Customer Profiles" });
+    try {
+      const getCustomers = await Customer.find();
+      res.json(getCustomers);
+    } catch (error) {
+      throw new Error(error);
+    }
   });
 
 const getCustomerProfile = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: "Get Customer Profile" });
+  // res.status(200).json({ message: "Get Customer Profile" });
 });
 
 const updateCustomerProfile = asyncHandler(async (req, res) => {
