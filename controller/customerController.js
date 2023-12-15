@@ -32,9 +32,22 @@ const registerCustomer = asyncHandler(async (req, res) => {
     }
 });
 
-const loginCustomer = (req, res) => {
-  res.status(200).json({ message: "Login Customer" });
-};
+const loginCustomer = asyncHandler (async(req, res) => {
+    const { email, password } = req.body;
+    
+    const customer = await Customer.findOne({ email });
+    
+    if (customer && (await customer.matchPassword(password))) {
+        generateToken(res, customer._id); 
+        res.json({
+        _id: customer._id,
+        name: customer.name,
+        email: customer.email,
+      });
+    } else {
+        res.status(401).json("Invalid email or password");
+    }
+});
 
 const logoutCustomer = (req, res) => {
   res.status(200).json({ message: "logout Customer" });
