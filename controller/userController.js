@@ -253,6 +253,7 @@ const blockAUser = asyncHandler( async (req, res) => {
 // unblock a user
 const unblockAUser = asyncHandler( async (req, res) => {
   const {id} = req.params;
+  validateMongoDbId(id);
   try {
     const block = await User.findByIdAndUpdate(
       id,

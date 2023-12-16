@@ -12,14 +12,15 @@ router.post("/reset-password/:token", resetPassword);
 router.post("/reserve-a-train", authMiddleware, reserveATrain);
 router.put("/password", authMiddleware, updatePassword);
 
-router.get("/all-users", getAllUsers);
-router.get("/:id", authMiddleware, isAdmin, getaUser);
+router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
+
+router.get("/refresh", authMiddleware, handleRefreshToken);
+router.get("/all-users", authMiddleware, isAdmin, getAllUsers);
+router.get("/:id", authMiddleware, getaUser);
 router.get("/get-all-reservations", authMiddleware, getAllTrainReservations);
-router.get("/refresh", handleRefreshToken);
 router.get("/logout", logout);
 router.get("/get-reservation/:id", authMiddleware, getATrainReservation);
 
-router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 
 // router.put("/:id", updateaUser);
 router.put("/update-user", authMiddleware, updateAUser);
