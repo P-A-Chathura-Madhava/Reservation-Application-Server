@@ -24,8 +24,8 @@ app.use(express.json());
 app.use(cookieParser());
 // app.use(bodyParser.json());
 app.use("/api/v1/user", authRoute);
-app.use("/api/v1/customer", customerRoute);
 app.use("/api/v1/train", trainRoute);
+app.use("/api/v1/customer", customerRoute);
 app.use("/api/v1/train-class", trainClassRoute);
 
 // middlewares

@@ -15,10 +15,10 @@ router.put("/password", authMiddleware, updatePassword);
 router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 
 router.get("/refresh", authMiddleware, handleRefreshToken);
+router.get("/logout", logout);
 router.get("/all-users", authMiddleware, isAdmin, getAllUsers);
 router.get("/:id", authMiddleware, getaUser);
 router.get("/get-all-reservations", authMiddleware, getAllTrainReservations);
-router.get("/logout", logout);
 router.get("/get-reservation/:id", authMiddleware, getATrainReservation);
 
 

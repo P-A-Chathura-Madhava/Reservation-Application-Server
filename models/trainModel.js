@@ -1,4 +1,3 @@
-import { Timestamp } from "mongodb";
 import mongoose from "mongoose";
 
 // Declare the Schema of the Mongo model
@@ -16,7 +15,10 @@ let trainSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    class: [{ type: mongoose.Schema.Types.ObjectId, ref: "TrainClass" }],
+    class: /* {
+      type: mongoose.Schema.Types.ObjectId,
+      red: "TrainClass"
+    } */ [{ type: mongoose.Schema.Types.ObjectId, ref: "TrainClass" }],
     seat: {
       type: Number,
       default: 0,

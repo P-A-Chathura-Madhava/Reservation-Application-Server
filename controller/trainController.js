@@ -2,6 +2,7 @@ import Train from "../models/trainModel.js";
 import asyncHandler from 'express-async-handler';
 
 const createTrain = asyncHandler(async (req, res) => {
+  // console.log(req.body);
     try {
         const newTrain = await Train.create(req.body);
         res.json(newTrain);
