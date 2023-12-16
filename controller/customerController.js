@@ -38,14 +38,15 @@ const loginCustomer = asyncHandler (async(req, res) => {
     const customer = await Customer.findOne({ email });
     
     if (customer && (await customer.matchPassword(password))) {
-        generateToken(res, customer._id); 
+        const token = generateToken(res, customer._id); 
         res.json({
         _id: customer._id,
         name: customer.name,
         email: customer.email,
+        token
       });
     } else {
-        res.status(401).json("Invalid email or password");
+        res.status(401).json({message: "Invalid email or password"});
     }
 });
 

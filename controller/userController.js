@@ -207,8 +207,8 @@ const deleteaUser = asyncHandler(async (req, res) => {
 //     }
 // });
 
-const updateaUser = asyncHandler(async (req, res) => {
-  console.log(req.user);
+const updateAUser = asyncHandler(async (req, res) => {
+  // console.log(req.user);
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
@@ -224,6 +224,48 @@ const updateaUser = asyncHandler(async (req, res) => {
       }
     );
     res.json(updatedUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// block a user
+const blockAUser = asyncHandler( async (req, res) => {
+  const {id} = req.params;
+  try {
+    const block = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: true
+      },
+      {
+        new: true
+      }
+    )
+    res.json({
+      message: "User Blocked"
+    })
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+// unblock a user
+const unblockAUser = asyncHandler( async (req, res) => {
+  const {id} = req.params;
+  try {
+    const block = await User.findByIdAndUpdate(
+      id,
+      {
+        isBlocked: false
+      },
+      {
+        new: true
+      }
+    );
+    res.json({
+      message: "User Unblocked"
+    })
   } catch (error) {
     throw new Error(error);
   }
@@ -317,7 +359,9 @@ export {
   getAllUsers,
   getaUser,
   deleteaUser,
-  updateaUser,
+  updateAUser,
+  blockAUser,
+  unblockAUser,
   handleRefreshToken,
   logout,
   loginAdmin,
@@ -326,5 +370,5 @@ export {
   resetPassword,
   reserveATrain,
   getATrainReservation,
-  getAllTrainReservations
+  getAllTrainReservations,
 };
