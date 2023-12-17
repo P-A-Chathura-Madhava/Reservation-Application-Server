@@ -10,7 +10,6 @@ router.post("/admin-login", loginAdmin);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.post("/reset-password/:token", resetPassword);
 router.post("/reserve-a-train", authMiddleware, reserveATrain);
-router.put("/password", authMiddleware, updatePassword);
 
 router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 
@@ -26,5 +25,6 @@ router.get("/get-reservation/:id", authMiddleware, getATrainReservation);
 router.put("/update-user", authMiddleware, updateAUser);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockAUser);
 router.put("/unblock-user/:id", authMiddleware, isAdmin, unblockAUser);
+router.put("/reset-password", authMiddleware, updatePassword);
 
 export default router;
