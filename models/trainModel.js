@@ -11,7 +11,11 @@ let trainSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    route: {
+    from: {
+      type: String,
+      required: true,
+    },
+    to: {
       type: String,
       required: true,
     },
