@@ -3,8 +3,8 @@ import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
 import validateMongoDbId from "../utils/validateMongodbId.js";
 import generateRefreshToken from "../config/refreshToken.js";
-import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import Reservation from "../models/reservationModel.js";
 import sendEmail from "./emailController.js";
 import TrainClass from "../models/trainClassModel.js";
@@ -233,43 +233,43 @@ const updateAUser = asyncHandler(async (req, res) => {
 });
 
 // block a user
-const blockAUser = asyncHandler( async (req, res) => {
-  const {id} = req.params;
+const blockAUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   try {
     const block = await User.findByIdAndUpdate(
       id,
       {
-        isBlocked: true
+        isBlocked: true,
       },
       {
-        new: true
+        new: true,
       }
-    )
+    );
     res.json({
-      message: "User Blocked"
-    })
+      message: "User Blocked",
+    });
   } catch (error) {
     throw new Error(error);
   }
 });
 
 // unblock a user
-const unblockAUser = asyncHandler( async (req, res) => {
-  const {id} = req.params;
+const unblockAUser = asyncHandler(async (req, res) => {
+  const { id } = req.params;
   validateMongoDbId(id);
   try {
     const block = await User.findByIdAndUpdate(
       id,
       {
-        isBlocked: false
+        isBlocked: false,
       },
       {
-        new: true
+        new: true,
       }
     );
     res.json({
-      message: "User Unblocked"
-    })
+      message: "User Unblocked",
+    });
   } catch (error) {
     throw new Error(error);
   }
@@ -310,16 +310,18 @@ const loginAdmin = asyncHandler(async (req, res) => {
 // Reservations
 // reserve a train
 const reserveATrain = asyncHandler(async (req, res) => {
-  const {
-    ticketInfo,
-    reservedTrain
-  } = req.body;
+  const { ticketInfo, reservedTrain } = req.body;
 
   const { _id } = req.user;
-  const reservedClass = await TrainClass.findOne({_id: reservedTrain.trainClass});
+  const reservedClass = await TrainClass.findOne({
+    _id: reservedTrain.trainClass,
+  });
   const totalPrice = reservedClass.price * reservedTrain.seat;
-  // console.log(price);
   reservedTrain.price = totalPrice;
+
+  const user = await User.findById(_id);
+  const email = user.email;
+  const name = user.name;
 
   try {
     const reservationData = await Reservation.create({
@@ -327,6 +329,19 @@ const reserveATrain = asyncHandler(async (req, res) => {
       ticketInfo,
       reservedTrain,
     });
+
+    // send email
+
+    const data = {
+      to: email,
+      text: "Your Ticket Details",
+      subject: "Ticket Details",
+      html: `<h1>User : ${name}</h1><h2>Address : ${ticketInfo.address}</h2><h2>Seats : ${reservedTrain.seat}</h2><h1>Price : ${totalPrice}<h1/>`,
+    };
+    sendEmail(data);
+
+    // -----------------
+
     res.json({
       reservationData,
       success: true,
@@ -350,11 +365,11 @@ const getATrainReservation = asyncHandler(async (req, res) => {
 // get all reservations
 const getAllTrainReservations = asyncHandler(async (req, res) => {
   try {
-      const getTrainReservations = await Reservation.find();
-      res.json(getTrainReservations);
-    } catch (error) {
-      throw new Error(error);
-    }
+    const getTrainReservations = await Reservation.find();
+    res.json(getTrainReservations);
+  } catch (error) {
+    throw new Error(error);
+  }
 });
 
 export {
