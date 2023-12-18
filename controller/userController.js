@@ -274,6 +274,7 @@ const unblockAUser = asyncHandler( async (req, res) => {
   }
 });
 
+// admin login
 const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   // check if user exists or not

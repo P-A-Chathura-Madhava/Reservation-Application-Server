@@ -7,9 +7,6 @@ let trainClassSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    seat: {
-      type: Number,
-    },
   },
   { timestamps: true }
 );

@@ -9,8 +9,9 @@ router.post("/register", createUser);
 router.post("/login", loginUserCtrl);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
-// 
 router.post("/admin-login", loginAdmin);
+// 
+
 router.post("/reserve-a-train", authMiddleware, reserveATrain);
 
 // 
