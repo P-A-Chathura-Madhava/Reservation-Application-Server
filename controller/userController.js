@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import Reservation from "../models/reservationModel.js";
 import sendEmail from "./emailController.js";
+import TrainClass from "../models/trainClassModel.js";
 
 const createUser = asyncHandler(async (req, res) => {
   // console.log(req.body);
@@ -315,17 +316,16 @@ const reserveATrain = asyncHandler(async (req, res) => {
   } = req.body;
 
   const { _id } = req.user;
-
-  // console.log("ticketInfo", ticketInfo);
-  // console.log("reservedTrain", reservedTrain);
-  // console.log("totalPrice", totalPrice);
-  // console.log("id", _id);
+  const reservedClass = await TrainClass.findOne({_id: reservedTrain.trainClass});
+  const totalPrice = reservedClass.price * reservedTrain.seat;
+  // console.log(price);
+  reservedTrain.price = totalPrice;
 
   try {
     const reservationData = await Reservation.create({
+      user: _id,
       ticketInfo,
       reservedTrain,
-      user: _id,
     });
     res.json({
       reservationData,

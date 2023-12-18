@@ -10,9 +10,9 @@ router.post("/login", loginUserCtrl);
 router.post("/forgot-password-token", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
 router.post("/admin-login", loginAdmin);
+router.post("/reserve-a-train", authMiddleware, reserveATrain);
 // 
 
-router.post("/reserve-a-train", authMiddleware, reserveATrain);
 
 // 
 router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
