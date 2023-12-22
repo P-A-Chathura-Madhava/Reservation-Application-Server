@@ -8,7 +8,7 @@ router.post("/", authMiddleware, isAdmin, createTrain);
 router.put("/:id", authMiddleware, isAdmin, updateATrain);
 router.get("/search-train", searchTrains);
 router.get("/:id", getATrain);
-router.get("/", getAllTrains);
+router.get("/", authMiddleware, isAdmin, getAllTrains);
 router.delete("/:id", authMiddleware, isAdmin, deleteATrain);
 
 export default router;
