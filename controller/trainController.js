@@ -13,15 +13,18 @@ const createTrain = asyncHandler(async (req, res) => {
 
 const updateATrain = asyncHandler(async (req, res) => {
   const { id } = req.params;
+  // console.log("id", id);
+  // console.log("data", req.body);
   try {
     const updatedTrain = await Train.findByIdAndUpdate(
       id,
       {
         number: req?.body?.number,
         name: req?.body?.name,
-        route: req?.body?.route,
+        from: req?.body?.from,
+        to: req?.body?.to,
         class: req?.body?.class,
-        seat: req?.body?.seat,
+        seats: req?.body?.seats,
       },
       {
         new: true,

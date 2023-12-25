@@ -23,7 +23,7 @@ let trainSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, 
       ref: "TrainClass" 
     }],
-    seat: {
+    seats: {
       type: Number,
       default: 0,
     },
