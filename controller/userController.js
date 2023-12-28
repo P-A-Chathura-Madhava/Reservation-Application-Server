@@ -123,7 +123,8 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid for 10 minutes from now. <a href='http://localhost:5000/api/v1/user/reset-password/${token}'>Click Here</>`;
+    // const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid for 10 minutes from now. <a href='http://localhost:5000/api/v1/user/reset-password/${token}'>Click Here</>`;
+    const resetURL = `Hi, Please follow this link to reset Your Password. This link is valid for 10 minutes from now. <a href='http://localhost:3000/reset-password/${token}'>Click Here</>`;
     const data = {
       to: email,
       text: "Hey User",
@@ -310,18 +311,27 @@ const loginAdmin = asyncHandler(async (req, res) => {
 // Reservations
 // reserve a train
 const reserveATrain = asyncHandler(async (req, res) => {
+  // console.log(req.body);
   const { ticketInfo, reservedTrain } = req.body;
-
+  
   const { _id } = req.user;
+  // console.log("Working");
+  // console.log("ticket", ticketInfo);
+  // console.log("train", reservedTrain);
+  // console.log("user", _id);
   const reservedClass = await TrainClass.findOne({
     _id: reservedTrain.trainClass,
   });
+  // console.log("seatClass", reservedClass);
   const totalPrice = reservedClass.price * reservedTrain.seat;
+  // console.log("totalPrice", totalPrice);
   reservedTrain.price = totalPrice;
 
   const user = await User.findById(_id);
   const email = user.email;
   const name = user.name;
+  // console.log("email", email);
+  // console.log("name", name);
 
   try {
     const reservationData = await Reservation.create({
@@ -329,6 +339,7 @@ const reserveATrain = asyncHandler(async (req, res) => {
       ticketInfo,
       reservedTrain,
     });
+    console.log(reservationData);
 
     // send email
 
