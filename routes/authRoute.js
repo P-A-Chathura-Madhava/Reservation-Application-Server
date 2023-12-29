@@ -38,7 +38,7 @@ router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 //
 router.get("/refresh", authMiddleware, handleRefreshToken);
 router.get("/logout", logout);
-router.get("/all-users", getAllUsers);
+router.get("/all-users", authMiddleware, isAdmin, getAllUsers);
 router.get(
   "/get-all-reservations",
   getAllTrainReservations
