@@ -14,7 +14,7 @@ const router = express.Router();
 router.post("/", registerCustomer);
 router.post("/login", loginCustomer);
 router.post("/logout", logoutCustomer);
-router.get("/all-customers", protect, getAllCustomerProfiles);
+router.get("/all-customers", /* protect, */ getAllCustomerProfiles);
 router.route("/profile").get(protect, getCustomerProfile).put(protect, updateCustomerProfile);
 
 export default router;

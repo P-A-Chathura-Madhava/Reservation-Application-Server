@@ -72,6 +72,15 @@ const getAllTrains = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllTrainsList = asyncHandler(async (req, res) => {
+  try {
+    const getTrains = await Train.find();
+    res.json(getTrains);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // Method 01
 // get trains with filtering
 // http://localhost:5000/api/v1/train?name=Fastline
@@ -143,6 +152,7 @@ export {
   updateATrain,
   getATrain,
   getAllTrains,
+  getAllTrainsList,
   deleteATrain,
   searchTrains,
 };
