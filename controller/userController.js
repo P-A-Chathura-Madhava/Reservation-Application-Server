@@ -7,7 +7,6 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import Reservation from "../models/reservationModel.js";
 import sendEmail from "./emailController.js";
-import TrainClass from "../models/trainClassModel.js";
 
 const createUser = asyncHandler(async (req, res) => {
   // console.log(req.body);
@@ -308,60 +307,6 @@ const loginAdmin = asyncHandler(async (req, res) => {
   }
 });
 
-// Reservations
-// reserve a train
-const reserveATrain = asyncHandler(async (req, res) => {
-  // console.log(req.body);
-  const { ticketInfo, reservedTrain } = req.body;
-  
-  const { _id } = req.user;
-  // console.log("Working");
-  // console.log("ticket", ticketInfo);
-  // console.log("train", reservedTrain);
-  // console.log("user", _id);
-  const reservedClass = await TrainClass.findOne({
-    _id: reservedTrain.trainClass,
-  });
-  // console.log("seatClass", reservedClass);
-  const totalPrice = reservedClass.price * reservedTrain.seat;
-  // console.log("totalPrice", totalPrice);
-  reservedTrain.price = totalPrice;
-
-  const user = await User.findById(_id);
-  const email = user.email;
-  const name = user.name;
-  // console.log("email", email);
-  // console.log("name", name);
-
-  try {
-    const reservationData = await Reservation.create({
-      user: _id,
-      ticketInfo,
-      reservedTrain,
-    });
-    console.log(reservationData);
-
-    // send email
-
-    const data = {
-      to: email,
-      text: "Your Ticket Details",
-      subject: "Ticket Details",
-      html: `<h1>User : ${name}</h1><h2>Address : ${ticketInfo.address}</h2><h2>Seats : ${reservedTrain.seat}</h2><h1>Price : ${totalPrice}<h1/>`,
-    };
-    sendEmail(data);
-
-    // -----------------
-
-    res.json({
-      reservationData,
-      success: true,
-    });
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
 // get a reservation
 const getATrainReservation = asyncHandler(async (req, res) => {
   const { id } = req.params;
@@ -398,7 +343,6 @@ export {
   updatePassword,
   forgotPasswordToken,
   resetPassword,
-  reserveATrain,
   getATrainReservation,
   getAllTrainReservations,
 };

@@ -4,23 +4,20 @@ import Customer from '../models/customerModel.js';
 
 const protect = asyncHandler(async (req, res, next) => {
   let token;
-
-  token = req.cookies.jwt;
-
-  if (token) {
+  if (req?.headers?.authorization?.startsWith("Bearer")) {
+    token = req.headers.authorization.split(" ")[1];
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-      req.customer = await Customer.findById(decoded.userId).select('-password');
-      next();
+      if (token) {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const customer = await Customer.findById(decoded?.id);
+        req.customer = customer;
+        next();
+      }
     } catch (error) {
-      console.error(error);
-      res.status(401);
-      throw new Error('Not authorized, token failed');
+      throw new Error("Not autherized, token expired. Please login again");
     }
   } else {
-    res.status(401).json('Not authorized, no token');
-    // throw new Error('Not authorized, no token');
+    throw new Error("There is no token attach to the hearder");
   }
 });
 
