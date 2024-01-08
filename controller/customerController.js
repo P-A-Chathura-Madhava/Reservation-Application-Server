@@ -115,6 +115,19 @@ const updateCustomerProfile = asyncHandler(async (req, res) => {
   }
 });
 
+const deleteACustomer = asyncHandler(async (req, res) => {
+  // console.log(req.params);
+  const { id } = req.params;
+  try {
+    const deletedCustomer = await Customer.findByIdAndDelete(id);
+    res.json({
+      deletedCustomer,
+    });
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
 // Reservations
 // reserve a train
 const reserveATrain = asyncHandler(async (req, res) => {
@@ -162,5 +175,6 @@ export {
   getAllCustomerProfiles,
   getCustomerProfile,
   updateCustomerProfile,
+  deleteACustomer,
   reserveATrain
 };
