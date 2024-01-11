@@ -1,7 +1,7 @@
 import { generateToken } from "../config/jwtToken.js";
 import User from "../models/userModel.js";
 import asyncHandler from "express-async-handler";
-import validateMongoDbId from "../utils/validateMongodbId.js";
+// import validateMongoDbId from "../utils/validateMongodbId.js";
 import generateRefreshToken from "../config/refreshToken.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
@@ -103,7 +103,7 @@ const logout = asyncHandler(async (req, res) => {
 const updatePassword = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   const { password } = req.body;
-  validateMongoDbId(_id);
+  // validateMongoDbId(_id);
   const user = await User.findById(_id);
   if (password) {
     user.password = password;
@@ -167,7 +167,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
 // get a user
 const getaUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  validateMongoDbId(id);
+  // validateMongoDbId(id);
   try {
     const getaUser = await User.findById(id);
     res.json({
@@ -181,7 +181,7 @@ const getaUser = asyncHandler(async (req, res) => {
 // delete a user
 const deleteaUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  validateMongoDbId(id);
+  // validateMongoDbId(id);
   try {
     const deleteaUser = await User.findByIdAndDelete(id);
     res.json({
@@ -213,7 +213,7 @@ const deleteaUser = asyncHandler(async (req, res) => {
 const updateAUser = asyncHandler(async (req, res) => {
   // console.log(req.user);
   const { _id } = req.user;
-  validateMongoDbId(_id);
+  // validateMongoDbId(_id);
   try {
     const updatedUser = await User.findByIdAndUpdate(
       _id,
@@ -256,7 +256,7 @@ const blockAUser = asyncHandler(async (req, res) => {
 // unblock a user
 const unblockAUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  validateMongoDbId(id);
+  // validateMongoDbId(id);
   try {
     const block = await User.findByIdAndUpdate(
       id,
