@@ -17,7 +17,7 @@ const router = express.Router();
 router.post("/", registerCustomer);
 router.post("/login", loginCustomer);
 router.post("/logout", logoutCustomer);
-router.post("/reserve-a-train", protect, reserveATrain);
+router.post("/reserve-a-train", /* protect, */ reserveATrain);
 router.get("/all-customers", /* protect, */ getAllCustomerProfiles);
 
 router.delete("/delete-a-customer/:id", /* protect, */ deleteACustomer);

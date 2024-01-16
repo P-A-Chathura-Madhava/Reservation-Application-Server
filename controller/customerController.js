@@ -1,5 +1,5 @@
 import asyncHandler from "express-async-handler";
-import Customer from '../models/customerModel.js';
+import Customer from "../models/customerModel.js";
 import { generateToken } from "../config/jwtToken.js";
 import generateRefreshToken from "../config/refreshToken.js";
 import Reservation from "../models/reservationModel.js";
@@ -7,22 +7,22 @@ import TrainClass from "../models/trainClassModel.js";
 
 const registerCustomer = asyncHandler(async (req, res) => {
   // console.log(req.body);
-    const {name, email, mobile, password} = req.body;
+  const { name, email, mobile, password } = req.body;
 
-    const findCustomer = await Customer.findOne({ email: email });
-    if (!findCustomer) {
-      // Create new user
-      const newCustomer = await Customer.create(req.body);
-      res.json(newCustomer);
-    } else {
-      // User already exists
-      throw new Error("User Already Exists");
-    }
+  const findCustomer = await Customer.findOne({ email: email });
+  if (!findCustomer) {
+    // Create new user
+    const newCustomer = await Customer.create(req.body);
+    res.json(newCustomer);
+  } else {
+    // User already exists
+    throw new Error("User Already Exists");
+  }
 });
 
-const loginCustomer = asyncHandler (async(req, res) => {
+const loginCustomer = asyncHandler(async (req, res) => {
   // console.log(req.body);
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
   // check is user extixts or not
   const findCustomer = await Customer.findOne({ email });
@@ -54,28 +54,28 @@ const loginCustomer = asyncHandler (async(req, res) => {
 });
 
 const logoutCustomer = (req, res) => {
-//   res.status(200).json({ message: "logout Customer" });
-res.cookie('jwt', '', {
+  //   res.status(200).json({ message: "logout Customer" });
+  res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(0),
   });
-  res.status(200).json({ message: 'Logged out successfully' });
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 const getAllCustomerProfiles = asyncHandler(async (req, res) => {
-    // res.status(200).json({ message: "Get All Customer Profiles" });
-    try {
-      const getCustomers = await Customer.find();
-      res.json(getCustomers);
-    } catch (error) {
-      throw new Error(error);
-    }
-  });
+  // res.status(200).json({ message: "Get All Customer Profiles" });
+  try {
+    const getCustomers = await Customer.find();
+    res.json(getCustomers);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
 
 const getCustomerProfile = asyncHandler(async (req, res) => {
   // res.status(200).json({ message: "Get Customer Profile" });
   const customer = await Customer.findById(req.customer._id);
-  
+
   if (customer) {
     res.json({
       _id: customer._id,
@@ -83,7 +83,7 @@ const getCustomerProfile = asyncHandler(async (req, res) => {
       email: customer.email,
     });
   } else {
-    res.status(404).json('User not found');
+    res.status(404).json("User not found");
     // throw new Error('User not found');
   }
 });
@@ -92,7 +92,7 @@ const updateCustomerProfile = asyncHandler(async (req, res) => {
   // res.status(200).json({ message: "Update Customer Profile" });
   const customer = await Customer.findById(req.customer._id);
   // console.log(customer);
-  
+
   if (customer) {
     customer.name = req.body.name || customer.name;
     customer.email = req.body.email || customer.email;
@@ -110,7 +110,7 @@ const updateCustomerProfile = asyncHandler(async (req, res) => {
       email: updatedCustomer.email,
     });
   } else {
-    res.status(404).json('User not found');
+    res.status(404).json("User not found");
     // throw new Error('User not found');
   }
 });
@@ -131,40 +131,24 @@ const deleteACustomer = asyncHandler(async (req, res) => {
 // Reservations
 // reserve a train
 const reserveATrain = asyncHandler(async (req, res) => {
-  const { ticketInfo, reservedTrain } = req.body;
-  
-  const customer = req.customer;
-  const reservedClass = await TrainClass.findOne({
-    _id: reservedTrain.trainClass,
-  });
-  const totalPrice = reservedClass.price * reservedTrain.seat;
-  reservedTrain.price = totalPrice;
-
   try {
-    const reservationData = await Reservation.create({
-      user: customer?._id,
-      ticketInfo,
-      reservedTrain,
-    });
+    const newReservation = await Reservation.create(req.body);
 
-    // send email
+  // send email
+  // const findCustomer = await Customer.findOne({ _id: req.body.user });
+  // const {name, email} = findCustomer;
+  //   // console.log(name, email);
 
-    // const data = {
-    //   to: email,
-    //   text: "Your Ticket Details",
-    //   subject: "Ticket Details",
-    //   html: `<h1>User : ${name}</h1><h2>Address : ${ticketInfo.address}</h2><h2>Seats : ${reservedTrain.seat}</h2><h1>Price : ${totalPrice}<h1/>`,
-    // };
-    // sendEmail(data);
-
-    // -----------------
-
-    res.json({
-      reservationData,
-      success: true,
-    });
+  // const data = {
+  //   to: email,
+  //   text: "Your Ticket Details",
+  //   subject: "Ticket Details",
+  //   html: `<h1>User : ${name}</h1><h2>Address : ${req.body.address}</h2><h2>Seats : ${req.body.passengers}</h2>`,
+  // };
+  // await sendEmail(data);
+    res.json(newReservation);
   } catch (error) {
-    throw new Error(error);
+    throw new Error("Server Error");
   }
 });
 
@@ -176,5 +160,5 @@ export {
   getCustomerProfile,
   updateCustomerProfile,
   deleteACustomer,
-  reserveATrain
+  reserveATrain,
 };

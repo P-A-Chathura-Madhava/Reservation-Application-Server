@@ -8,52 +8,52 @@ let ReservationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    ticketInfo: {
-      firstName: {
-        type: String,
-        required: true,
-      },
-      lastName: {
-        type: String,
-        required: true,
-      },
-      address: {
-        type: String,
-        required: true,
-      },
-      city: {
-        type: String,
-        required: true,
-      },
-      state: {
-        type: String,
-        required: true,
-      },
-      pincode: {
-        type: Number,
-        required: true,
-      },
+    firstname: {
+      type: String,
+      required: true,
     },
-    reservedTrain: {
-      train: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Train",
-        required: true,
-      },
-      trainClass: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "TrainClass",
-        required: true,
-      },
-      seat: {
-        type: Number,
-        required: true,
-      },
-      price: {
-        type: Number,
-        required: true,
-      },
+    lastname: {
+      type: String,
+      required: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
+    city: {
+      type: String,
+      required: true,
+    },
+    state: {
+      type: String,
+      required: true,
+    },
+    pincode: {
+      type: Number,
+      required: true,
+    },
+    trainName: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Train",
+      required: true,
+    },
+    seatClass: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TrainClass",
+      required: true,
+    },
+    // seat: {
+    //   type: Number,
+    //   required: true,
+    // },
+    passengers: {
+      type: Number,
+      required: true,
+    }
+    // price: {
+    //   type: Number,
+    //   required: true,
+    // },
   },
   { timestamps: true }
 );
